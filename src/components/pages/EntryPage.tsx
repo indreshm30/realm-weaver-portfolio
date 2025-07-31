@@ -57,7 +57,9 @@ const EntryPage: React.FC<EntryPageProps> = ({
         duration: 0.8
       }}>
           <h1 className="text-6xl md:text-8xl font-bold text-foreground mb-4">
-            <span className="bg-gradient-to-r from-accent via-primary-glow to-accent bg-clip-text text-transparent">INDRESH M</span>
+            <span className="bg-gradient-to-r from-accent via-primary-glow to-accent bg-clip-text text-transparent">
+              KAMUI
+            </span>
           </h1>
           <p className="text-xl md:text-2xl text-muted-foreground font-medium">
             Enter the Digital Realm
