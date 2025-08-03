@@ -48,7 +48,7 @@ pipeline {
       echo '✅ CI + Docker Build + Push completed!'
     }
     failure {
-      echo '❌ Pipeline failed!'
+      echo '❌ Pipeline failed! Please check logs above.'
     }
   }
 }
