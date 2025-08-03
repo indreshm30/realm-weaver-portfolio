@@ -3,6 +3,7 @@ pipeline {
 
   environment {
     PATH = "${env.PATH}:${WORKSPACE}/node_modules/.bin"
+    DOCKER_IMAGE = "indreshm30/realm-weaver:latest"
   }
 
   stages {
@@ -20,25 +21,34 @@ pipeline {
 
     stage('Build') {
       steps {
-        // Clean previous build artifacts just to be safe
-        sh 'rm -rf dist .vite .vite-temp'
         sh 'npx vite build'
       }
     }
 
     stage('Docker Build') {
       steps {
-        sh 'docker build -t realm-weaver:latest .'
+        sh 'docker build -t $DOCKER_IMAGE .'
+      }
+    }
+
+    stage('Docker Push') {
+      steps {
+        withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKERHUB_USER', passwordVariable: 'DOCKERHUB_PASS')]) {
+          sh '''
+            echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USER" --password-stdin
+            docker push $DOCKER_IMAGE
+          '''
+        }
       }
     }
   }
 
   post {
     success {
-      echo '✅ Build succeeded!'
+      echo '✅ CI + Docker Build + Push completed!'
     }
     failure {
-      echo '❌ Build failed!'
+      echo '❌ Pipeline failed!'
     }
   }
 }
