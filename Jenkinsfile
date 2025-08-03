@@ -2,7 +2,7 @@ pipeline {
   agent {
     docker {
       image 'node:20'
-      args '-v $HOME/.npm:/root/.npm'
+      reuseNode true
     }
   }
 
