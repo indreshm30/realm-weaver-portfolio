@@ -15,18 +15,15 @@ pipeline {
 
     stage('Install Dependencies') {
       steps {
-        sh 'npm install'
+        sh 'npm ci'
       }
     }
-stage('Build') {
-  steps {
-    sh '''
-      npm install vite --save-dev
-      npm run build
-    '''
-  }
-}
 
+    stage('Build') {
+      steps {
+        sh 'npx vite build'
+      }
+    }
   }
 
   post {
