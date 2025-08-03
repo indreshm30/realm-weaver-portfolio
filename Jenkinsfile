@@ -20,8 +20,15 @@ pipeline {
 
     stage('Build') {
       steps {
+        // Clean previous build artifacts just to be safe
         sh 'rm -rf dist .vite .vite-temp'
         sh 'npx vite build'
+      }
+    }
+
+    stage('Docker Build') {
+      steps {
+        sh 'docker build -t realm-weaver:latest .'
       }
     }
   }
