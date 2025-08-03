@@ -2,7 +2,6 @@ pipeline {
   agent any
 
   environment {
-    NODE_ENV = 'production'
     PATH = "${env.PATH}:${WORKSPACE}/node_modules/.bin"
   }
 
@@ -21,16 +20,17 @@ pipeline {
 
     stage('Build') {
       steps {
- sh 'npx vite build'      }
+        sh 'npx vite build'
+      }
     }
   }
 
   post {
-    failure {
-      echo '❌ Build failed!'
-    }
     success {
       echo '✅ Build succeeded!'
+    }
+    failure {
+      echo '❌ Build failed!'
     }
   }
 }
