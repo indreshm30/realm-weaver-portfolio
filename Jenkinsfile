@@ -1,5 +1,10 @@
 pipeline {
-  agent any
+  agent {
+    docker {
+      image 'node:20'
+      args '-v $HOME/.npm:/root/.npm'
+    }
+  }
 
   environment {
     NODE_ENV = 'production'
