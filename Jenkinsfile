@@ -3,29 +3,35 @@ pipeline {
 
   environment {
     NODE_ENV = 'production'
+    PATH = "${env.PATH}:${WORKSPACE}/node_modules/.bin"
   }
 
   stages {
-    stage('Use Node Docker Image') {
+    stage('Checkout') {
       steps {
-        script {
-          docker.image('node:20').inside {
-            sh 'node -v'
-            sh 'npm install'
-            sh 'npm run build'
-            sh 'ls -la dist || true'
-          }
-        }
+        checkout scm
+      }
+    }
+
+    stage('Install Dependencies') {
+      steps {
+        sh 'npm install'
+      }
+    }
+
+    stage('Build') {
+      steps {
+        sh 'npm run build'
       }
     }
   }
 
   post {
-    success {
-      echo '✅ Build succeeded!'
-    }
     failure {
       echo '❌ Build failed!'
+    }
+    success {
+      echo '✅ Build succeeded!'
     }
   }
 }
