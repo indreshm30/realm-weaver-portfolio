@@ -1,31 +1,21 @@
 pipeline {
-  agent {
-    docker {
-      image 'node:20'
-      reuseNode true
-    }
-  }
+  agent any
 
   environment {
     NODE_ENV = 'production'
   }
 
   stages {
-    stage('Install Dependencies') {
+    stage('Use Node Docker Image') {
       steps {
-        sh 'npm install'
-      }
-    }
-
-    stage('Build Project') {
-      steps {
-        sh 'npm run build'
-      }
-    }
-
-    stage('List Build Files') {
-      steps {
-        sh 'ls -la dist'
+        script {
+          docker.image('node:20').inside {
+            sh 'node -v'
+            sh 'npm install'
+            sh 'npm run build'
+            sh 'ls -la dist || true'
+          }
+        }
       }
     }
   }
