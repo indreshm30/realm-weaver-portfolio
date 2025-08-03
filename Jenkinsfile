@@ -6,12 +6,6 @@ pipeline {
   }
 
   stages {
-    stage('Clone Repo') {
-      steps {
-        git 'https://github.com/indreshm30/realm-weaver-portfolio.git'
-      }
-    }
-
     stage('Install Dependencies') {
       steps {
         sh 'npm install'
