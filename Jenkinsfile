@@ -3,7 +3,8 @@ pipeline {
 
   environment {
     PATH = "${env.PATH}:${WORKSPACE}/node_modules/.bin"
-    DOCKER_IMAGE = "indreshm30/realm-weaver:latest"
+    DOCKER_IMAGE = "indreshm/realm-weaver:latest"
+
   }
 
   stages {
