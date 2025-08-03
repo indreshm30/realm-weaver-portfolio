@@ -2,7 +2,6 @@ pipeline {
   agent any
 
   environment {
-    NODE_ENV = 'production'
     PATH = "${env.PATH}:${WORKSPACE}/node_modules/.bin"
   }
 
@@ -19,17 +18,10 @@ pipeline {
       }
     }
 
-   stage('Build') {
-  steps {
-    sh 'rm -rf dist .vite .vite-temp || true'
-    sh 'node --no-warnings --loader ./node-loader.mjs node_modules/vite/bin/vite.js build'
-  }
-}
-
-
-    stage('Docker Build') {
+    stage('Build') {
       steps {
-        sh 'docker build -t realm-weaver:latest .'
+        sh 'rm -rf dist .vite .vite-temp'
+        sh 'npx vite build'
       }
     }
   }
