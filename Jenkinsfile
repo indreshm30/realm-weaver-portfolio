@@ -21,8 +21,7 @@ pipeline {
 
     stage('Build') {
       steps {
-sh 'node --loader ts-node/esm node_modules/vite/bin/vite.js build'
-      }
+ sh 'npx vite build'      }
     }
   }
 
