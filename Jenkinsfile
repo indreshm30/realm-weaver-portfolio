@@ -19,13 +19,13 @@ pipeline {
       }
     }
 
-    stage('Build') {
-      steps {
-        // Clean possible corrupted vite cache
-        sh 'rm -rf dist .vite .vite-temp || true'
-        sh 'npx vite build'
-      }
-    }
+   stage('Build') {
+  steps {
+    sh 'rm -rf dist .vite .vite-temp || true'
+    sh 'node --no-warnings --loader ./node-loader.mjs node_modules/vite/bin/vite.js build'
+  }
+}
+
 
     stage('Docker Build') {
       steps {
