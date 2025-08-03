@@ -21,7 +21,9 @@ pipeline {
 
     stage('Build') {
       steps {
-        sh 'node --loader ts-node/esm node_modules/vite/bin/vite.js build'
+        // Clean possible corrupted vite cache
+        sh 'rm -rf dist .vite .vite-temp || true'
+        sh 'npx vite build'
       }
     }
 
