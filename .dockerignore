@@ -10,8 +10,6 @@ coverage
 .cache
 .DS_Store
 *.log
-dist
-build
 .vscode
 .idea
 *.swp
@@ -20,3 +18,12 @@ build
 Dockerfile
 .github
 Jenkinsfile
+src
+public
+package*.json
+bun.lockb
+vite.config.*
+tsconfig*.json
+tailwind.config.*
+postcss.config.js
+eslint.config.js
