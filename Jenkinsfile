@@ -2,10 +2,17 @@ pipeline {
   agent any
 
   environment {
-    DOCKER_IMAGE = 'indreshm/realm-weaver:latest'
+    PATH = "${env.PATH}:${WORKSPACE}/node_modules/.bin"
+    DOCKER_IMAGE = "indreshm/realm-weaver:latest"
   }
 
   stages {
+    stage('Checkout') {
+      steps {
+        checkout scm
+      }
+    }
+
     stage('Install Dependencies') {
       steps {
         sh 'npm ci'
@@ -14,7 +21,7 @@ pipeline {
 
     stage('Build') {
       steps {
-        sh 'npm run build'
+        sh 'npx vite build'
       }
     }
 
@@ -26,9 +33,9 @@ pipeline {
 
     stage('Docker Push') {
       steps {
-        withCredentials([usernamePassword(credentialsId: 'docker-hub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+        withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKERHUB_USER', passwordVariable: 'DOCKERHUB_PASS')]) {
           sh '''
-            echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+            echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USER" --password-stdin
             docker push $DOCKER_IMAGE
           '''
         }
@@ -37,11 +44,11 @@ pipeline {
   }
 
   post {
+    success {
+      echo '✅ CI + Docker Build + Push completed!'
+    }
     failure {
       echo '❌ Pipeline failed! Please check logs above.'
-    }
-    success {
-      echo '✅ Pipeline completed successfully.'
     }
   }
 }
